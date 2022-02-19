@@ -8,6 +8,7 @@ import com.sparta.magazine.security.UserDetailsImpl;
 import com.sparta.magazine.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,21 +22,22 @@ public class PostController {
 
     @PostMapping("/api/post")
     public Post createPost(@RequestBody String contents,  @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        User user = userDetails.getUser();
-        if (user==null) {
-            throw new RuntimeException("로그인하지 않은 사용자는 포스팅할 수 없습니다.");
-        }
-        Long userId = user.getId();
 
-//        String nickname = user.getNickname();
-        PostRequestDto postRequestDto = new PostRequestDto(userId, contents);
-        Post post = new Post(postRequestDto);
-        return postRepository.save(post);
+        //TODO 로그인 안한 사용자 식별해서 에러 메시지를 프론트엔드에 전달하는 방법은?
+        if (userDetails == null) {
+            throw new RuntimeException("로그인하지 않은 사용자는 포스팅할 수 없습니다.");
+        } else {
+            User user = userDetails.getUser();
+            Long userId = user.getId();
+            Post post = postService.createPost(userId, contents);
+            return post;
+        }
     }
 
     @GetMapping("/api/post")
     public List<Post> readPost() {
-        return postRepository.findAllByOrderByModifiedAtDesc();
+        List<Post> posts = postService.readPost();
+        return posts;
     }
 
     @GetMapping("api/post/{id}")
