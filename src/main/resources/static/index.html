@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</head>
+<script>
+
+    function writePost() {
+        let contents = $('#contents').val();
+        // let data = {'contents': contents};
+
+        console.log(contents)
+        $.ajax({
+            type: "POST",
+            url: "/api/post",
+            contentType: "application/json", // JSON 형식으로 전달함을 알리기
+            // data: JSON.stringify(data),
+            data: contents,
+            success: function (response) {
+                alert('게시글이 등록되었습니다.');
+                window.location.reload();
+            }
+        });
+    }
+
+
+    function changeLike() {
+        let post_id = $('#post_id').val();
+        console.log(post_id)
+        $.ajax({
+            type: 'GET',
+            url: `/api/post/${post_id}/like`,
+            success: function (response) {
+                alert(response);
+            }
+        })
+
+    }
+
+</script>
+
+<body>
+메인
+
+<div>
+    <input type="text" id="contents">
+    <button onclick="writePost()">게시글 올리기</button>
+</div>
+
+<div>
+    <input type="text" id="post_id">
+    <button onclick="changeLike()">좋아요 변화</button>
+</div>
+
+
+<a href="/user/logout">로그아웃</a>
+</body>
+</html>
