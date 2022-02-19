@@ -10,8 +10,8 @@ public class UserController {
 
     // 로그인 실패 메시지
     @GetMapping("/user/login/error")
-    public String loginFail() {
-        return "아이디 또는 패스워드를 확인해주세요.";
+    public void loginFail() {
+        throw new IllegalArgumentException("아이디 또는 패스워드를 확인해주세요.");
     }
 
 }

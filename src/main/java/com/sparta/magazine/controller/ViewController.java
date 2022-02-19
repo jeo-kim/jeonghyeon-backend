@@ -24,7 +24,8 @@ public class ViewController {
     public String login(@AuthenticationPrincipal UserDetailsImpl userDetails) {
         //TODO 적절한 방식으로 로그인한 사용자 예외처리 메세지 보내기
         if (userDetails != null) {
-            return "이미 로그인이 되어 있습니다.";
+//            return "이미 로그인이 되어 있습니다.";
+            throw new IllegalArgumentException("이미 로그인이 되어 있습니다.");
         }
         return "login";
     }
@@ -33,7 +34,8 @@ public class ViewController {
     @GetMapping("/user/signup")
     public String signup(@AuthenticationPrincipal UserDetailsImpl userDetails) {
         if (userDetails != null) {
-            return "이미 로그인이 되어 있습니다.";
+//            return "이미 로그인이 되어 있습니다.";
+            throw new IllegalArgumentException("이미 로그인이 되어 있습니다.");
         }
         return "signup";
     }

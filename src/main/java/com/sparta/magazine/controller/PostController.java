@@ -23,9 +23,8 @@ public class PostController {
     @PostMapping("/api/post")
     public Post createPost(@RequestBody String contents,  @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
-        //TODO 로그인 안한 사용자 식별해서 에러 메시지를 프론트엔드에 전달하는 방법은?
         if (userDetails == null) {
-            throw new RuntimeException("로그인하지 않은 사용자는 포스팅할 수 없습니다.");
+            throw new IllegalArgumentException("로그인하지 않은 사용자는 포스팅할 수 없습니다.");
         } else {
             User user = userDetails.getUser();
             Long userId = user.getId();

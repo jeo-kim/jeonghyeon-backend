@@ -23,11 +23,8 @@ public class LikeController {
 
     @GetMapping("/api/post/{post_id}/like")
     public String createLike(@PathVariable Long post_id, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-
         if (userDetails == null) {
-            //TODO 그냥 string 과 exception 중 무엇으로 프론트에 전달하는 것이 더 좋을까?
-            return "좋아요를 하기 위해서는 로그인이 필요합니다.";
-//            throw new RuntimeException("좋아요를 하기 위해서는 로그인이 필요합니다.");
+            throw new IllegalArgumentException("좋아요를 하기 위해서는 로그인이 필요합니다.");
         } else {
             // spring security 에 의해 로그인한 user 객체 받아오고
             User user = userDetails.getUser();
