@@ -1,5 +1,7 @@
 package com.sparta.magazine.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.sparta.magazine.dto.LikeRequestDto;
 import com.sparta.magazine.dto.PostRequestDto;
 import lombok.Getter;
@@ -19,10 +21,12 @@ public class Like extends Timestamped{
     private Long id;
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "fkey_user_id"))
     private User user;
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "post_id", foreignKey = @ForeignKey(name = "fkey_post_id"))
     private Post post;
 

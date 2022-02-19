@@ -26,7 +26,6 @@ public class LikeController {
         // get으로 받는 post_id로 post 객체도 받아온다.
         Post post = postRepository.getById(post_id);
 
-
         //이 user 가 이 post 에 대한 like 한적 있는지 likeRepository 에서 찾아보기
         Optional<Like> optionalLike = likeRepository.findByUserAndPost(user, post);
 
@@ -43,8 +42,6 @@ public class LikeController {
             return "좋아요 추가완료: " + save.getId();
         }
 
-
     }
-
 
 }

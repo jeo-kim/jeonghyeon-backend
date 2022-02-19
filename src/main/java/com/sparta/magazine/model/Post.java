@@ -20,25 +20,12 @@ public class Post extends Timestamped { // 생성,수정 시간을 자동으로 
 
     @Column(nullable = false)
     private Long userId;
-//
-//    @Column(nullable = false)
-//    private String nickname;
-
-//    @ManyToOne
-//    @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "fkey_user_id"))
-//    private User author;
 
     @Column(nullable = false)
     private String contents;
 
     @OneToMany(mappedBy = "post")
     private List<Like> likes = new ArrayList<>();
-
-//    public Post(String userId, String nickname, String contents) {
-//        this.userId = userId;
-//        this.nickname = nickname;
-//        this.contents = contents;
-//    }
 
     public Post(PostRequestDto requestDto) {
         this.userId = requestDto.getUserId();
