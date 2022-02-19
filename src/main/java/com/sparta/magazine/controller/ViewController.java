@@ -40,11 +40,11 @@ public class ViewController {
         return "signup";
     }
 
-    // 회원 가입 요청 처리
-    @PostMapping("/user/signup")
-    public String registerUser(SignupRequestDto requestDto) {
-        userService.registerUser(requestDto);
-        return "redirect:/user/login";
-    }
+//    // 회원 가입 요청 처리
+//    @PostMapping("/user/signup")
+//    public String registerUser(SignupRequestDto requestDto) {
+//        userService.registerUser(requestDto);
+//        return "redirect:/user/login";
+//    }
 
 }
