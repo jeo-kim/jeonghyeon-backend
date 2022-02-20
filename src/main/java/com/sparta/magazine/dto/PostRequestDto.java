@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Getter
 public class PostRequestDto {
-    private final Long userId;
+//    private final Long userId;
+    private final String imageUrl;
     private final String contents;
 }

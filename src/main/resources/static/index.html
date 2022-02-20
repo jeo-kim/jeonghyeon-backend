@@ -10,15 +10,16 @@
 
     function writePost() {
         let contents = $('#contents').val();
-        // let data = {'contents': contents};
+        let imageUrl = $('#imageUrl').val();
+        let data = {'contents': contents, 'imageUrl':imageUrl};
 
         console.log(contents)
         $.ajax({
             type: "POST",
             url: "/api/post",
             contentType: "application/json", // JSON 형식으로 전달함을 알리기
-            // data: JSON.stringify(data),
-            data: contents,
+            data: JSON.stringify(data),
+            // data: contents,
             success: function (response) {
                 alert('게시글이 등록되었습니다.');
                 window.location.reload();
@@ -29,10 +30,21 @@
 
     function changeLike() {
         let post_id = $('#post_id').val();
-        console.log(post_id)
         $.ajax({
             type: 'GET',
             url: `/api/post/${post_id}/like`,
+            success: function (response) {
+                alert(response);
+            }
+        })
+
+    }
+
+    function deletePost() {
+        let post_id_delete = $('#post_id_delete').val();
+        $.ajax({
+            type: 'DELETE',
+            url: `/api/post/${post_id_delete}`,
             success: function (response) {
                 alert(response);
             }
@@ -46,16 +58,25 @@
 메인
 
 <div>
-    <input type="text" id="contents">
+    <span>게시글 쓰기</span>
+    <input type="text" id="contents"><br>
+    <span>게시글 이미지 url</span>
+    <input type="text" id="imageUrl">
     <button onclick="writePost()">게시글 올리기</button>
 </div>
-
+<br><br>
 <div>
     <input type="text" id="post_id">
     <button onclick="changeLike()">좋아요 변화</button>
 </div>
+<br><br>
+<div>
+    <input type="text" id="post_id_delete">
+    <button onclick="deletePost()">게시글 삭제</button>
+</div>
 
 
 <a href="/user/logout">로그아웃</a>
+<a href="/user/login">로그인</a>
 </body>
 </html>

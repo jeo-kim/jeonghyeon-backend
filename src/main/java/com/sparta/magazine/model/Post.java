@@ -24,16 +24,23 @@ public class Post extends Timestamped { // 생성,수정 시간을 자동으로 
     @Column(nullable = false)
     private String contents;
 
+    @Column(nullable = false)
+    private String imageUrl;
+
     @OneToMany(mappedBy = "post")
     private List<Like> likes = new ArrayList<>();
 
-    public Post(PostRequestDto requestDto) {
-        this.userId = requestDto.getUserId();
+    public Post(Long userId, PostRequestDto requestDto) {
+//        this.userId = requestDto.getUserId();
+        this.userId = userId;
         this.contents = requestDto.getContents();
+        this.imageUrl = requestDto.getImageUrl();
     }
 
-    public void update(PostRequestDto requestDto) {
-        this.userId = requestDto.getUserId();
+    public void update(Long userId, PostRequestDto requestDto) {
+//        this.userId = requestDto.getUserId();
+        this.userId = userId;
         this.contents = requestDto.getContents();
+        this.imageUrl = requestDto.getImageUrl();
     }
 }

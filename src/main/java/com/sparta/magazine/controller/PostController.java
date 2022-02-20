@@ -21,14 +21,14 @@ public class PostController {
     private final PostService postService;
 
     @PostMapping("/api/post")
-    public Post createPost(@RequestBody String contents,  @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public Post createPost(@RequestBody PostRequestDto postRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
         if (userDetails == null) {
             throw new IllegalArgumentException("로그인하지 않은 사용자는 포스팅할 수 없습니다.");
         } else {
             User user = userDetails.getUser();
             Long userId = user.getId();
-            Post post = postService.createPost(userId, contents);
+            Post post = postService.createPost(userId, postRequestDto);
             return post;
         }
     }
@@ -44,15 +44,18 @@ public class PostController {
         return postRepository.findById(id);
     }
 
-    @PutMapping("api/post/{id}")
-    public Long updatePost(@PathVariable Long id, @RequestBody PostRequestDto requestDto) {
-        postService.update(id, requestDto);
-        return id;
+    @PutMapping("api/post/{postId}")
+    public Long updatePost(@PathVariable Long postId, @RequestBody PostRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        Long userId = userDetails.getUser().getId();
+        postService.update(postId, userId, requestDto);
+        return postId;
     };
 
-    @DeleteMapping("/api/post/{id}")
-    public Long deletePost(@PathVariable Long id) {
-        postRepository.deleteById(id);
-        return id;
+    @DeleteMapping("/api/post/{postId}")
+    public Long deletePost(@PathVariable Long postId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        Long userId = userDetails.getUser().getId();
+        Long deletedId = postService.deletePost(postId, userId);
+
+        return deletedId;
     }
 }

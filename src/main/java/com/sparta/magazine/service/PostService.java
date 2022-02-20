@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 
 @RequiredArgsConstructor
 @Service
@@ -16,9 +17,9 @@ public class PostService {
     private final PostRepository postRepository;
 
     @Transactional
-    public Post createPost(Long userId, String contents) {
-        PostRequestDto postRequestDto = new PostRequestDto(userId, contents);
-        Post post = new Post(postRequestDto);
+    public Post createPost(Long userId, PostRequestDto postRequestDto) {
+//        PostRequestDto postRequestDto = new PostRequestDto(userId, contents, imageUrl);
+        Post post = new Post(userId, postRequestDto);
         return postRepository.save(post);
     }
 
@@ -36,13 +37,31 @@ public class PostService {
 
 
     @Transactional
-    public Long update(Long id, PostRequestDto requestDto) {
-        Post post = postRepository.findById(id).orElseThrow(
-                () -> new IllegalArgumentException("memo id가 존재하지 않습니다.")
+    public Long update(Long postId, Long userId, PostRequestDto requestDto) {
+        Post post = postRepository.findById(postId).orElseThrow(
+                () -> new IllegalArgumentException("해당하는 postId가 존재하지 않습니다.")
         );
-        post.update(requestDto);
+        Long originUserId = post.getUserId();
+        if (!Objects.equals(userId, originUserId)) {
+            throw new IllegalArgumentException("작성자가 아니면 수정할 수 없습니다.");
+        }
+
+        post.update(userId, requestDto);
         return post.getId();
     }
 
 
+    public Long deletePost(Long postId, Long userId) {
+        Post post = postRepository.findById(postId).orElseThrow(
+                () -> new IllegalArgumentException("해당하는 postId가 존재하지 않습니다.")
+        );
+
+        Long originUserId = post.getUserId();
+        if (!Objects.equals(userId, originUserId)) {
+            throw new IllegalArgumentException("작성자가 아니면 삭제할 수 없습니다.");
+        }
+
+        postRepository.deleteById(postId);
+        return postId;
+    }
 }
