@@ -31,12 +31,6 @@ public class User {
     @Column(nullable = false, unique = true)
     private String nickname;
 
-//    @OneToMany(mappedBy = "author")
-//    private List<Post> posts = new ArrayList<>();
-
-
-//    //TODO @Column 없어도 되나??
-//    @Column(nullable = false)
     @OneToMany(mappedBy = "user")
     private List<Like> likes = new ArrayList<>();
 
