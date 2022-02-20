@@ -7,7 +7,7 @@
 
 </head>
 <script>
-    // 게시글 post
+    // 게시글 작성
     function writePost() {
         let contents = $('#contents').val();
         let imageUrl = $('#imageUrl').val();
@@ -17,7 +17,7 @@
         $.ajax({
             type: "POST",
             url: "/api/post",
-            contentType: "application/json", // JSON 형식으로 전달함을 알리기
+            contentType: "application/json",
             data: JSON.stringify(data),
             // data: contents,
             success: function (response) {
@@ -27,7 +27,7 @@
         });
     }
 
-    //게시글 update
+    // 게시글 수정
     function updatePost() {
         let post_id_update = $('#post_id_update').val();
         let contents = $('#contents_update').val();
@@ -47,17 +47,7 @@
         });
     }
 
-    function changeLike() {
-        let post_id = $('#post_id_like').val();
-        $.ajax({
-            type: 'GET',
-            url: `/api/post/${post_id}/like`,
-            success: function (response) {
-                alert(response);
-            }
-        })
-    }
-
+    // 게시글 삭제
     function deletePost() {
         let post_id_delete = $('#post_id_delete').val();
         $.ajax({
@@ -70,6 +60,30 @@
 
     }
 
+    // 좋아요 변화
+    function changeLike() {
+        let post_id = $('#post_id_like').val();
+        $.ajax({
+            type: 'GET',
+            url: `/api/post/${post_id}/like`,
+            success: function (response) {
+                alert(response);
+            }
+        })
+    }
+
+    // 단일 게시글 조회
+    function getSinglePost() {
+        let post_id = $('#post_id_single_get').val();
+        $.ajax({
+            type: 'GET',
+            url: `/api/post/${post_id}`,
+            success: function (response) {
+            }
+        })
+
+    }
+
 </script>
 
 <body>
@@ -77,7 +91,8 @@
 
 <h1>기능별 테스트</h1>
 <div>
-    <span>1.게시글 post 테스트</span><br>
+    <h2>1.게시글 post 테스트</h2>
+    <h3>method: POST, api: /api/post</h3>
     <span>게시글 contents(text)</span>
     <input type="text" id="contents"><br>
     <span>게시글 image url</span>
@@ -86,7 +101,8 @@
 </div>
 <br><br>
 <div>
-    <span>2.게시글 update 테스트</span><br>
+    <h2>2.게시글 update 테스트</h2>
+    <h3>method: PUT, api: /api/post/{postId}</h3>
     <span>수정할 게시글 id</span>
     <input type="text" id="post_id_update"><br>
     <span>게시글 contents(text)</span>
@@ -97,18 +113,28 @@
 </div>
 <br><br>
 <div>
-    <span>3.게시글 delete 테스트</span>
+    <h2>3.게시글 delete 테스트</h2>
+    <h3>method: DELETE, api: /api/post/{postId}</h3>
     <input type="text" placeholder="삭제할 게시글 번호" id="post_id_delete">
     <button onclick="deletePost()">게시글 삭제</button>
 </div>
 <br><br>
 <div>
-    <span>4.좋아요 변화 테스트</span>
+    <h2>4.좋아요 변화 테스트</h2>
+    <h3>method: GET, api: /api/post/{postId}/like</h3>
     <input type="text" placeholder="좋아요 또는 좋아요 취소할 번호"id="post_id_like">
     <button onclick="changeLike()">좋아요 변화</button>
 </div>
-
-
+<br><br>
+<h2>5. 전체 게시글 받아오기 테스트</h2>
+<h3>method: GET, api: /api/post</h3>
+<a href="/api/post">전체 게시글 보기</a>
+<br><br>
+<h2>6. 단일 게시글 받아오기 테스트</h2>
+<h3>method: GET, api: /api/post/{postId}</h3>
+<input type="text" placeholder="조회할 게시글 번호" id="post_id_single_get">
+<button onclick="getSinglePost()">단일 게시글 보기</button>
+<br><br>
 
 
 <a href="/user/logout">로그아웃</a>

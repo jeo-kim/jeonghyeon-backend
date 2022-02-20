@@ -2,6 +2,7 @@ package com.sparta.magazine.controller;
 
 import com.sparta.magazine.dto.PostRequestDto;
 import com.sparta.magazine.model.Post;
+import com.sparta.magazine.model.PostToFE;
 import com.sparta.magazine.model.User;
 import com.sparta.magazine.repository.PostRepository;
 import com.sparta.magazine.security.UserDetailsImpl;
@@ -28,21 +29,30 @@ public class PostController {
         } else {
             User user = userDetails.getUser();
             Long userId = user.getId();
-            Post post = postService.createPost(userId, postRequestDto);
+            String nickname = user.getNickname();
+            Post post = postService.createPost(userId, nickname, postRequestDto);
             return post;
         }
     }
 
-    //TODO Get에 대해서도 Service의 작업이 필요. 로그인정보 확인해서, 좋아요 여부 반영한 게시글 정보 보내야 하니까.
     @GetMapping("/api/post")
-    public List<Post> readPost() {
-        List<Post> posts = postService.readPost();
-        return posts;
+    public List<PostToFE> getAllPosts(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        // 로그인했으면 해당 id를, 로그인 안했으면 -1을 userId에 할당
+        Long userId = (userDetails !=null) ? userDetails.getUser().getId() : -1;
+//        List<Post> posts = postService.readPost();
+        List<PostToFE> postsToFE = postService.getAllPosts(userId);
+        return postsToFE;
     }
 
-    @GetMapping("api/post/{id}")
-    public Optional<Post> singlePost(@PathVariable Long id) {
-        return postRepository.findById(id);
+    // TODO post => PostToFE 로 변환해서 보내기
+    @GetMapping("api/post/{postId}")
+    public PostToFE getSinglePost(@PathVariable Long postId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        Long userId = (userDetails !=null) ? userDetails.getUser().getId() : -1;
+
+        PostToFE postToFE = postService.getSinglePost(postId, userId);
+
+        return postToFE;
+//        return postRepository.findById(id);
     }
 
     @PutMapping("api/post/{postId}")
@@ -53,7 +63,8 @@ public class PostController {
         }
 
         Long userId = userDetails.getUser().getId();
-        postService.update(postId, userId, requestDto);
+        String nickname = userDetails.getUser().getNickname();
+        postService.update(postId, userId, nickname, requestDto);
         return postId;
     };
 
