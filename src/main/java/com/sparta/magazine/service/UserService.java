@@ -22,8 +22,8 @@ public class UserService {
 
     public void registerUser(SignupRequestDto requestDto) {
         // 회원 ID 중복 확인
-        String userId = requestDto.getUserId();
-        Optional<User> found = userRepository.findByUserId(userId);
+        String userEmail = requestDto.getUserEmail();
+        Optional<User> found = userRepository.findByUserEmail(userEmail);
         if (found.isPresent()) {
             throw new IllegalArgumentException("중복된 사용자 ID 가 존재합니다.");
         }
@@ -32,7 +32,7 @@ public class UserService {
         String password = passwordEncoder.encode(requestDto.getPassword());
         String nickname = requestDto.getNickname();
 
-        User user = new User(userId, password, nickname);
+        User user = new User(userEmail, password, nickname);
         userRepository.save(user);
     }
 }

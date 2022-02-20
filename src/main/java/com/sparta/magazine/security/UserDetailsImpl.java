@@ -27,7 +27,7 @@ public class UserDetailsImpl implements UserDetails {
     //TODO UserId, nickname, Id 중 무엇을 사용해야 할지
     @Override
     public String getUsername() {
-        return user.getUserId();
+        return user.getUserEmail();
     }
 
     @Override

@@ -23,7 +23,7 @@ public class User {
     // nullable: null 허용 여부
     // unique: 중복 허용 여부 (false 일때 중복 허용)
     @Column(nullable = false, unique = true)
-    private String userId;
+    private String userEmail;
 
     @Column(nullable = false)
     private String password;
@@ -41,9 +41,8 @@ public class User {
     private List<Like> likes = new ArrayList<>();
 
 
-
-    public User(String userId, String password, String nickname) {
-        this.userId = userId;
+    public User(String userEmail, String password, String nickname) {
+        this.userEmail = userEmail;
         this.password = password;
         this.nickname = nickname;
     }
