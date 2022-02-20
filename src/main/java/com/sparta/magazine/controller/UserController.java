@@ -45,7 +45,7 @@ public class UserController {
         userService.registerUser(requestDto);
 //        return "redirect:/user/login";
         response.sendRedirect("/user/login");
-
+        //TODO 프론트에 회원가입 Success 메시지 return (스파르타 5주차 참고)
     }
 
 }

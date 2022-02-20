@@ -7,7 +7,7 @@
 
 </head>
 <script>
-
+    // 게시글 post
     function writePost() {
         let contents = $('#contents').val();
         let imageUrl = $('#imageUrl').val();
@@ -27,9 +27,28 @@
         });
     }
 
+    //게시글 update
+    function updatePost() {
+        let post_id_update = $('#post_id_update').val();
+        let contents = $('#contents_update').val();
+        let imageUrl = $('#imageUrl_update').val();
+        let data = {'contents': contents, 'imageUrl':imageUrl};
+
+        console.log(contents)
+        $.ajax({
+            type: "PUT",
+            url: `/api/post/${post_id_update}`,
+            contentType: "application/json", // JSON 형식으로 전달함을 알리기
+            data: JSON.stringify(data),
+            success: function (response) {
+                alert('게시글이 수정되었습니다.');
+                window.location.reload();
+            }
+        });
+    }
 
     function changeLike() {
-        let post_id = $('#post_id').val();
+        let post_id = $('#post_id_like').val();
         $.ajax({
             type: 'GET',
             url: `/api/post/${post_id}/like`,
@@ -37,7 +56,6 @@
                 alert(response);
             }
         })
-
     }
 
     function deletePost() {
@@ -57,23 +75,40 @@
 <body>
 메인
 
+<h1>기능별 테스트</h1>
 <div>
-    <span>게시글 쓰기</span>
+    <span>1.게시글 post 테스트</span><br>
+    <span>게시글 contents(text)</span>
     <input type="text" id="contents"><br>
-    <span>게시글 이미지 url</span>
+    <span>게시글 image url</span>
     <input type="text" id="imageUrl">
     <button onclick="writePost()">게시글 올리기</button>
 </div>
 <br><br>
 <div>
-    <input type="text" id="post_id">
-    <button onclick="changeLike()">좋아요 변화</button>
+    <span>2.게시글 update 테스트</span><br>
+    <span>수정할 게시글 id</span>
+    <input type="text" id="post_id_update"><br>
+    <span>게시글 contents(text)</span>
+    <input type="text" id="contents_update"><br>
+    <span>게시글 image url</span>
+    <input type="text" id="imageUrl_update">
+    <button onclick="updatePost()">게시글 수정하기</button>
 </div>
 <br><br>
 <div>
-    <input type="text" id="post_id_delete">
+    <span>3.게시글 delete 테스트</span>
+    <input type="text" placeholder="삭제할 게시글 번호" id="post_id_delete">
     <button onclick="deletePost()">게시글 삭제</button>
 </div>
+<br><br>
+<div>
+    <span>4.좋아요 변화 테스트</span>
+    <input type="text" placeholder="좋아요 또는 좋아요 취소할 번호"id="post_id_like">
+    <button onclick="changeLike()">좋아요 변화</button>
+</div>
+
+
 
 
 <a href="/user/logout">로그아웃</a>

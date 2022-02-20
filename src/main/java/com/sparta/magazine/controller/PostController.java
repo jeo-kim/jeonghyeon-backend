@@ -33,6 +33,7 @@ public class PostController {
         }
     }
 
+    //TODO Get에 대해서도 Service의 작업이 필요. 로그인정보 확인해서, 좋아요 여부 반영한 게시글 정보 보내야 하니까.
     @GetMapping("/api/post")
     public List<Post> readPost() {
         List<Post> posts = postService.readPost();
@@ -46,6 +47,11 @@ public class PostController {
 
     @PutMapping("api/post/{postId}")
     public Long updatePost(@PathVariable Long postId, @RequestBody PostRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+
+        if (userDetails == null) {
+            throw new IllegalArgumentException("로그인이 필요합니다.");
+        }
+
         Long userId = userDetails.getUser().getId();
         postService.update(postId, userId, requestDto);
         return postId;
@@ -53,6 +59,11 @@ public class PostController {
 
     @DeleteMapping("/api/post/{postId}")
     public Long deletePost(@PathVariable Long postId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+
+        if (userDetails == null) {
+            throw new IllegalArgumentException("로그인이 필요합니다.");
+        }
+
         Long userId = userDetails.getUser().getId();
         Long deletedId = postService.deletePost(postId, userId);
 
