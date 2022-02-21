@@ -16,7 +16,9 @@ http://3.34.133.18/
               
               String "layoutType":"layoutType"}
               
-  ✔︎ Response: Post에 대한 json
+  ✔︎ Response: Long 저장한 postId
+              
+              // 로그인하지 않은 사용자의 경우 400에러와 메시지("로그인하지 않은 사용자는 포스팅할 수 없습니다.")
               
 ## 2. 단일 게시글 조회              
   ✔︎ Method: GET
