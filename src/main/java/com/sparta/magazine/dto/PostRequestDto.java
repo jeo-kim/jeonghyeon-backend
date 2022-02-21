@@ -1,6 +1,5 @@
 package com.sparta.magazine.dto;
 
-import com.sparta.magazine.model.User;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 

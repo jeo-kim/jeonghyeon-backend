@@ -10,8 +10,8 @@ import javax.persistence.MappedSuperclass;
 import java.time.LocalDateTime;
 
 @Getter // 항상 잊지 말기 getter!
-@MappedSuperclass // Entity가 자동으로 컬럼으로 인식합니다.
-@EntityListeners(AuditingEntityListener.class) // 생성/변경 시간을 자동으로 업데이트합니다.
+@MappedSuperclass
+@EntityListeners(AuditingEntityListener.class)
 public abstract class Timestamped {
 
     @CreatedDate
