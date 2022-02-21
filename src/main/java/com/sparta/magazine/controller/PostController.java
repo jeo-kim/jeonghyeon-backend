@@ -1,7 +1,6 @@
 package com.sparta.magazine.controller;
 
 import com.sparta.magazine.dto.PostRequestDto;
-import com.sparta.magazine.model.Post;
 import com.sparta.magazine.model.PostToFE;
 import com.sparta.magazine.model.User;
 import com.sparta.magazine.security.UserDetailsImpl;
