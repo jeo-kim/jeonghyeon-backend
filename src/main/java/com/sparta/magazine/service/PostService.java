@@ -22,9 +22,10 @@ public class PostService {
     private final PostRepository postRepository;
 
     @Transactional
-    public Post createPost(User user, PostRequestDto postRequestDto) {
+    public Long createPost(User user, PostRequestDto postRequestDto) {
         Post post = new Post(user, postRequestDto);
-        return postRepository.save(post);
+        Post save = postRepository.save(post);
+        return save.getId();
     }
 
     public List<PostToFE> getAllPosts(Long userId) {

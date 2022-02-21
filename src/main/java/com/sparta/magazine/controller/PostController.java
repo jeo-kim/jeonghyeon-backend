@@ -18,13 +18,13 @@ public class PostController {
     private final PostService postService;
 
     @PostMapping("/api/post")
-    public Post createPost(@RequestBody PostRequestDto postRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public Long createPost(@RequestBody PostRequestDto postRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         if (userDetails == null) {
             throw new IllegalArgumentException("로그인하지 않은 사용자는 포스팅할 수 없습니다.");
         } else {
             User user = userDetails.getUser();
-            Post post = postService.createPost(user, postRequestDto);
-            return post;
+            Long savedId = postService.createPost(user, postRequestDto);
+            return savedId;
         }
     }
 
