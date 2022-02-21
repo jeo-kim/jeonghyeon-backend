@@ -1,5 +1,6 @@
 package com.sparta.magazine.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.sparta.magazine.dto.PostRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,11 +19,10 @@ public class Post extends Timestamped { // 생성,수정 시간을 자동으로 
     @Id
     private Long id;
 
-    @Column(nullable = false)
-    private Long userId;
-
-    @Column(nullable = false)
-    private String nickname;
+    @ManyToOne()
+    @JsonBackReference
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @Column(nullable = false)
     private String contents;
@@ -33,18 +33,15 @@ public class Post extends Timestamped { // 생성,수정 시간을 자동으로 
     @OneToMany(mappedBy = "post")
     private List<Like> likes = new ArrayList<>();
 
-    public Post(Long userId, String nickname, PostRequestDto requestDto) {
-//        this.userId = requestDto.getUserId();
-        this.userId = userId;
-        this.nickname = nickname;
+    public Post(User user, PostRequestDto requestDto) {
+
+        this.user = user;
         this.contents = requestDto.getContents();
         this.imageUrl = requestDto.getImageUrl();
     }
 
-    public void update(Long userId, String nickname, PostRequestDto requestDto) {
-//        this.userId = requestDto.getUserId();
-        this.userId = userId;
-        this.nickname = nickname;
+    public void update(User user, PostRequestDto requestDto) {
+        this.user = user;
         this.contents = requestDto.getContents();
         this.imageUrl = requestDto.getImageUrl();
     }

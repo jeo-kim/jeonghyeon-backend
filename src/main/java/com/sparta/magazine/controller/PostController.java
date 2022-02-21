@@ -23,9 +23,9 @@ public class PostController {
             throw new IllegalArgumentException("로그인하지 않은 사용자는 포스팅할 수 없습니다.");
         } else {
             User user = userDetails.getUser();
-            Long userId = user.getId();
-            String nickname = user.getNickname();
-            Post post = postService.createPost(userId, nickname, postRequestDto);
+//            Long userId = user.getId();
+//            String nickname = user.getNickname();
+            Post post = postService.createPost(user, postRequestDto);
             return post;
         }
     }
@@ -50,9 +50,10 @@ public class PostController {
         if (userDetails == null) {
             throw new IllegalArgumentException("로그인이 필요합니다.");
         }
-        Long userId = userDetails.getUser().getId();
-        String nickname = userDetails.getUser().getNickname();
-        postService.update(postId, userId, nickname, requestDto);
+        User user = userDetails.getUser();
+//        Long userId = userDetails.getUser().getId();
+//        String nickname = userDetails.getUser().getNickname();
+        postService.update(postId, user, requestDto);
         return postId;
     };
 
@@ -61,8 +62,8 @@ public class PostController {
         if (userDetails == null) {
             throw new IllegalArgumentException("로그인이 필요합니다.");
         }
-        Long userId = userDetails.getUser().getId();
-        Long deletedId = postService.deletePost(postId, userId);
+        User user = userDetails.getUser();
+        Long deletedId = postService.deletePost(postId, user);
         return deletedId;
     }
 }

@@ -4,6 +4,7 @@ import com.sparta.magazine.dto.PostRequestDto;
 import com.sparta.magazine.model.Like;
 import com.sparta.magazine.model.Post;
 import com.sparta.magazine.model.PostToFE;
+import com.sparta.magazine.model.User;
 import com.sparta.magazine.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,8 +22,8 @@ public class PostService {
     private final PostRepository postRepository;
 
     @Transactional
-    public Post createPost(Long userId, String nickname, PostRequestDto postRequestDto) {
-        Post post = new Post(userId, nickname, postRequestDto);
+    public Post createPost(User user, PostRequestDto postRequestDto) {
+        Post post = new Post(user, postRequestDto);
         return postRepository.save(post);
     }
 
@@ -51,7 +52,7 @@ public class PostService {
     //프론트에서 보여줄 양식대로 재편성하는 작업(닉네임, 좋아요 수, 각 게시물과 로그인한 사용자의 좋아요 관계 등)
     private PostToFE convertToPostFE(Long userId, Post post) {
         Long postId = post.getId();
-        String nickname = post.getNickname();
+        String nickname = post.getUser().getNickname();
         String createdAt = String.valueOf(post.getCreatedAt());
         String contents = post.getContents();
         String imageUrl = post.getImageUrl();
@@ -70,26 +71,25 @@ public class PostService {
     }
 
     @Transactional
-    public Long update(Long postId, Long userId, String nickname, PostRequestDto requestDto) {
+    public Long update(Long postId, User user, PostRequestDto requestDto) {
         Post post = postRepository.findById(postId).orElseThrow(
                 () -> new IllegalArgumentException("해당하는 postId가 존재하지 않습니다.")
         );
-        Long originUserId = post.getUserId();
-        if (!Objects.equals(userId, originUserId)) {
+        User originUser = post.getUser();
+        if (!Objects.equals(user.getId(), originUser.getId())) {
             throw new IllegalArgumentException("작성자가 아니면 수정할 수 없습니다.");
         }
-
-        post.update(userId, nickname, requestDto);
+        post.update(user, requestDto);
         return post.getId();
     }
 
     @Transactional
-    public Long deletePost(Long postId, Long userId) {
+    public Long deletePost(Long postId, User user) {
         Post post = postRepository.findById(postId).orElseThrow(
                 () -> new IllegalArgumentException("해당하는 postId가 존재하지 않습니다.")
         );
-        Long originUserId = post.getUserId();
-        if (!Objects.equals(userId, originUserId)) {
+        User originUser = post.getUser();
+        if (!Objects.equals(user.getId(), originUser.getId())) {
             throw new IllegalArgumentException("작성자가 아니면 삭제할 수 없습니다.");
         }
         postRepository.deleteById(postId);
