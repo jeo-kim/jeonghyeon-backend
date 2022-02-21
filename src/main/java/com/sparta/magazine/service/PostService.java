@@ -56,6 +56,7 @@ public class PostService {
         String createdAt = String.valueOf(post.getCreatedAt());
         String contents = post.getContents();
         String imageUrl = post.getImageUrl();
+        String layoutType = post.getLayoutType();
 
         List<Like> likes = post.getLikes();
         Long likeCnt = Long.valueOf(post.getLikes().size());
@@ -66,7 +67,7 @@ public class PostService {
                 break;
             }
         }
-        PostToFE postToFE = new PostToFE(postId, nickname, createdAt, contents, imageUrl, likeCnt, userLiked);
+        PostToFE postToFE = new PostToFE(postId, nickname, createdAt, contents, imageUrl, likeCnt, userLiked, layoutType);
         return postToFE;
     }
 

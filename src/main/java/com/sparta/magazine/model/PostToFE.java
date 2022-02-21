@@ -15,4 +15,5 @@ public class PostToFE {
     private final String imageUrl;
     private final Long likeCnt;
     private final Boolean userLiked;
+    private final String layoutType;
 }
