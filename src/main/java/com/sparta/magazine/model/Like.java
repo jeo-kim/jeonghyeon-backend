@@ -4,11 +4,10 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.sparta.magazine.dto.LikeRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.*;
 
-@Setter
+
 @Getter
 @NoArgsConstructor
 @Entity
