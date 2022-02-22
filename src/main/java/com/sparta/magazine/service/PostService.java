@@ -101,7 +101,7 @@ public class PostService {
     }
 
     private Sort sortByDate() {
-        return Sort.by(Sort.Direction.DESC, "modifiedAt");
+        return Sort.by(Sort.Direction.DESC, "createdAt");
     }
 
 }

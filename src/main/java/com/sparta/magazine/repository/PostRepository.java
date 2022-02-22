@@ -1,6 +1,5 @@
 package com.sparta.magazine.repository;
 
-import com.sparta.magazine.model.Like;
 import com.sparta.magazine.model.Post;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
