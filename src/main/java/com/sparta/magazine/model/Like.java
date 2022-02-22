@@ -9,10 +9,13 @@ import javax.persistence.*;
 
 
 @Getter
-@NoArgsConstructor
+//@NoArgsConstructor
 @Entity
 @Table(name = "LIKES")
 public class Like extends Timestamped{
+
+    protected Like() {}
+
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long id;

@@ -1,23 +1,18 @@
 package com.sparta.magazine.service;
 
 import com.sparta.magazine.dto.PostRequestDto;
+import com.sparta.magazine.model.LayoutType;
 import com.sparta.magazine.model.Like;
 import com.sparta.magazine.model.Post;
-import com.sparta.magazine.model.PostToFE;
+import com.sparta.magazine.dto.PostToFE;
 import com.sparta.magazine.model.User;
 import com.sparta.magazine.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.Transaction;
-import org.hibernate.engine.transaction.internal.TransactionImpl;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Service
@@ -65,7 +60,7 @@ public class PostService {
         String createdAt = String.valueOf(post.getCreatedAt());
         String contents = post.getContents();
         String imageUrl = post.getImageUrl();
-        String layoutType = post.getLayoutType();
+        LayoutType layoutType = post.getLayoutType();
 
         List<Like> likes = post.getLikes();
         Long likeCnt = Long.valueOf(post.getLikes().size());

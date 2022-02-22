@@ -9,11 +9,13 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@NoArgsConstructor // 기본생성자를 만듭니다.
+//@NoArgsConstructor // 기본생성자를 만듭니다.
 @Getter
 @Entity // 테이블과 연계됨을 스프링에게 알려줍니다.
 @Table(name = "POSTS")
 public class Post extends Timestamped { // 생성,수정 시간을 자동으로 만들어줍니다.
+
+    protected Post() {}
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -31,7 +33,8 @@ public class Post extends Timestamped { // 생성,수정 시간을 자동으로 
     private String imageUrl;
 
     @Column(nullable = false)
-    private String layoutType;
+    @Enumerated(EnumType.STRING)
+    private LayoutType layoutType;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
     private List<Like> likes = new ArrayList<>();

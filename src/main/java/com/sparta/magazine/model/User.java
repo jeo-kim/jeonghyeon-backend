@@ -8,10 +8,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-@NoArgsConstructor
+//@NoArgsConstructor
 @Entity
 @Table(name = "USERS")
 public class User {
+
+    protected User() {}
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id

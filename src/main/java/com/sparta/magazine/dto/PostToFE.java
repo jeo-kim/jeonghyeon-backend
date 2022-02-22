@@ -1,5 +1,6 @@
-package com.sparta.magazine.model;
+package com.sparta.magazine.dto;
 
+import com.sparta.magazine.model.LayoutType;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -15,5 +16,5 @@ public class PostToFE {
     private final String imageUrl;
     private final Long likeCnt;
     private final Boolean userLiked;
-    private final String layoutType;
+    private final LayoutType layoutType;
 }
