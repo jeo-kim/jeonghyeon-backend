@@ -7,10 +7,13 @@ import com.sparta.magazine.model.PostToFE;
 import com.sparta.magazine.model.User;
 import com.sparta.magazine.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.Transaction;
+import org.hibernate.engine.transaction.internal.TransactionImpl;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -29,9 +32,11 @@ public class PostService {
         return save.getId();
     }
 
+    @Transactional
     public List<PostToFE> getAllPosts(Long userId) {
+
         Sort sort = sortByDate();
-        List<Post> posts = postRepository.findAllByOrderByCreatedAtDesc(sort);
+        List<Post> posts = postRepository.findAllFetched(sort);
         List<PostToFE> postsToFE = new ArrayList<>();
 
         for (Post post : posts) {
@@ -41,6 +46,7 @@ public class PostService {
         return postsToFE;
     }
 
+    @Transactional
     public PostToFE getSinglePost(Long post_id, Long userId) {
         Optional<Post> optionalPost = postRepository.findById(post_id);
         if (optionalPost.isPresent()) {

@@ -9,6 +9,6 @@ import java.util.List;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
 
-    @Query("select p from Post p join fetch p.likes join fetch p.user")
-    List<Post> findAllByOrderByCreatedAtDesc(Sort sort);
+    @Query("select p from Post p left join fetch p.likes left join fetch p.user")
+    List<Post> findAllFetched(Sort sort);
 }
