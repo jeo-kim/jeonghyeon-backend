@@ -20,7 +20,7 @@ public class LikeService {
     @Transactional
     public String createLike(User user, Post post) {
         //이 user 가 이 post 에 대한 like 한적 있는지 likeRepository 에서 찾아보기
-        Optional<Like> optionalLike = likeRepository.findByUserAndPost(user, post);
+        Optional<Like> optionalLike = likeRepository.findByUserAndPost(user, Optional.ofNullable(post));
 
         if (optionalLike.isPresent()) {
             // 이미 like 존재하던 것이었다면, 해당 like entity 를 삭제하여 좋아요 취소 처리

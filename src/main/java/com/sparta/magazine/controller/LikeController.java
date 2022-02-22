@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RequiredArgsConstructor
 @RestController
 public class LikeController {
@@ -22,7 +24,11 @@ public class LikeController {
             throw new IllegalArgumentException("좋아요를 하기 위해서는 로그인이 필요합니다.");
         } else {
             User user = userDetails.getUser();
-            Post post = postRepository.getById(post_id);
+            Optional<Post> optionalPost = postRepository.findById(post_id);
+            if (!optionalPost.isPresent()) {
+                throw new IllegalArgumentException("해당 postId의 게시물이 존재하지 않습니다.");
+            }
+            Post post = optionalPost.get();
             // service 에게 작업 넘기고 적절한 메시지 돌려받는다.(좋아요 추가한 건지, 취소한건지)
             String message = likeService.createLike(user, post);
             return message;
