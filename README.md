@@ -1,5 +1,5 @@
 # 🥨 jeonghyeon-backend-magazine 🥨
-http://3.34.133.18/
+http://13.209.40.211/
 
 ## API List
 
