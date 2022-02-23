@@ -1,5 +1,6 @@
 # 🥨 jeonghyeon-backend-magazine 🥨
 http://13.209.40.211/
+
 임시 CORS 열어둔 주소: http://localhost:3000
 
 ## API List
