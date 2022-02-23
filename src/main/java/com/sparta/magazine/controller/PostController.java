@@ -18,15 +18,18 @@ public class PostController {
     private final PostService postService;
 
     @PostMapping("/api/post")
-    public Long createPost(@RequestBody PostRequestDto postRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public Long createPost(@RequestBody PostRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         if (userDetails == null) {
             throw new IllegalArgumentException("로그인하지 않은 사용자는 포스팅할 수 없습니다.");
-        } else {
-            User user = userDetails.getUser();
-            Long savedId = postService.createPost(user, postRequestDto);
-            return savedId;
         }
+        areValidInputs(requestDto);
+        User user = userDetails.getUser();
+        Long savedId = postService.createPost(user, requestDto);
+        return savedId;
+        
     }
+
+
 
     @GetMapping("/api/post")
     public List<PostToFE> getAllPosts(@AuthenticationPrincipal UserDetailsImpl userDetails, Pageable pageable) {
@@ -48,6 +51,7 @@ public class PostController {
         if (userDetails == null) {
             throw new IllegalArgumentException("로그인이 필요합니다.");
         }
+        areValidInputs(requestDto);
         User user = userDetails.getUser();
         postService.update(postId, user, requestDto);
         return postId;
@@ -61,5 +65,13 @@ public class PostController {
         User user = userDetails.getUser();
         Long deletedId = postService.deletePost(postId, user);
         return deletedId;
+    }
+
+    private void areValidInputs(PostRequestDto postRequestDto) {
+        String contents = postRequestDto.getContents().trim();
+        String imageUrl = postRequestDto.getImageUrl().trim();
+        if (contents.length() == 0 || imageUrl.length() == 0) {
+            throw new IllegalArgumentException("컨텐츠와 이미지url을 모두 입력해주세요.");
+        }
     }
 }
