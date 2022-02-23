@@ -89,7 +89,7 @@ public class PostService {
     }
 
     @Transactional
-    public Long deletePost(Long postId, User user) {
+    public String deletePost(Long postId, User user) {
         Post post = postRepository.findById(postId).orElseThrow(
                 () -> new IllegalArgumentException("해당하는 postId가 존재하지 않습니다.")
         );
@@ -97,8 +97,9 @@ public class PostService {
         if (!Objects.equals(user.getId(), originUser.getId())) {
             throw new IllegalArgumentException("작성자가 아니면 삭제할 수 없습니다.");
         }
+        String imageUrl = post.getImageUrl();
         postRepository.deleteById(postId);
-        return postId;
+        return imageUrl;
     }
 
 }

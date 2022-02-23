@@ -29,8 +29,6 @@ public class PostController {
         
     }
 
-
-
     @GetMapping("/api/post")
     public List<PostToFE> getAllPosts(@AuthenticationPrincipal UserDetailsImpl userDetails, Pageable pageable) {
         // 로그인했으면 해당 id를, 로그인 안했으면 -1을 userId에 할당
@@ -58,13 +56,13 @@ public class PostController {
     };
 
     @DeleteMapping("/api/post/{postId}")
-    public Long deletePost(@PathVariable Long postId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public String deletePost(@PathVariable Long postId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         if (userDetails == null) {
             throw new IllegalArgumentException("로그인이 필요합니다.");
         }
         User user = userDetails.getUser();
-        Long deletedId = postService.deletePost(postId, user);
-        return deletedId;
+        String deletedImageUrl = postService.deletePost(postId, user);
+        return deletedImageUrl;
     }
 
     private void areValidInputs(PostRequestDto postRequestDto) {
