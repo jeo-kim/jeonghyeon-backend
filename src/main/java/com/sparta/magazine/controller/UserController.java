@@ -4,6 +4,7 @@ import com.sparta.magazine.dto.SignupRequestDto;
 import com.sparta.magazine.service.UserService;
 import com.sparta.magazine.validator.SignupInputValidator;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RequiredArgsConstructor
 @RestController
 public class UserController {

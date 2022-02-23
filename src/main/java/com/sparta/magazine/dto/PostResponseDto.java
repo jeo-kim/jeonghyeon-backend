@@ -17,4 +17,5 @@ public class PostResponseDto {
     private final Long likeCnt;
     private final Boolean userLiked;
     private final LayoutType layoutType;
+    private final Boolean isMe;
 }

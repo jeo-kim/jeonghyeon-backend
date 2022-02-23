@@ -87,6 +87,7 @@ public class PostService {
         String contents = post.getContents();
         String imageUrl = post.getImageUrl();
         LayoutType layoutType = post.getLayoutType();
+        Boolean isMe = (Objects.equals(post.getUser().getId(), userId));
 
         List<Like> likes = post.getLikes();
         Long likeCnt = Long.valueOf(post.getLikes().size());
@@ -97,7 +98,7 @@ public class PostService {
                 break;
             }
         }
-        PostResponseDto postToFE = new PostResponseDto(postId, nickname, createdAt, contents, imageUrl, likeCnt, userLiked, layoutType);
+        PostResponseDto postToFE = new PostResponseDto(postId, nickname, createdAt, contents, imageUrl, likeCnt, userLiked, layoutType, isMe);
         return postToFE;
     }
 
