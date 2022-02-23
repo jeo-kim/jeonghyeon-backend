@@ -83,7 +83,7 @@ http://13.209.40.211/
   
   ✔︎ Request: Long postId
   
-  ✔︎ Response: Long 삭제한 postId
+  ✔︎ Response: String 삭제한 게시글의 imageUrl
   
                // 로그인하지 않은 사용자의 경우 400에러와 메시지("로그인이 필요합니다.")
                // 작성자가 아닌 사용자의 경우 400에러와 메시지("작성자가 아니면 삭제할 수 없습니다.")
