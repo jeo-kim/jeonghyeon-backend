@@ -8,7 +8,7 @@ import lombok.Setter;
 @Setter
 @Getter
 @RequiredArgsConstructor
-public class PostToFE {
+public class PostResponseDto {
     private final Long postId;
     private final String nickname;
     private final String createdAt;

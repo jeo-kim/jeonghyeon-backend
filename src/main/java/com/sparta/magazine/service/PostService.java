@@ -4,12 +4,11 @@ import com.sparta.magazine.dto.PostRequestDto;
 import com.sparta.magazine.model.LayoutType;
 import com.sparta.magazine.model.Like;
 import com.sparta.magazine.model.Post;
-import com.sparta.magazine.dto.PostToFE;
+import com.sparta.magazine.dto.PostResponseDto;
 import com.sparta.magazine.model.User;
 import com.sparta.magazine.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,50 +28,28 @@ public class PostService {
     }
 
     @Transactional
-    public List<PostToFE> getAllPosts(Long userId, Pageable pageable) {
+    public List<PostResponseDto> getAllPosts(Long userId, Pageable pageable) {
 
         List<Post> posts = postRepository.findAllFetched(pageable);
-        List<PostToFE> postsToFE = new ArrayList<>();
+        List<PostResponseDto> postsToFE = new ArrayList<>();
 
         for (Post post : posts) {
-            PostToFE postToFE = convertToPostFE(userId, post);
+            PostResponseDto postToFE = convertToPostFE(userId, post);
             postsToFE.add(postToFE);
         }
         return postsToFE;
     }
 
     @Transactional
-    public PostToFE getSinglePost(Long post_id, Long userId) {
+    public PostResponseDto getSinglePost(Long post_id, Long userId) {
         Optional<Post> optionalPost = postRepository.findById(post_id);
         if (optionalPost.isPresent()) {
             Post post = optionalPost.get();
-            PostToFE postToFE = convertToPostFE(userId, post);
+            PostResponseDto postToFE = convertToPostFE(userId, post);
             return postToFE;
         } else {
             throw new IllegalArgumentException("해당 postId의 게시물이 존재하지 않습니다.");
         }
-    }
-
-    //프론트에서 보여줄 양식대로 재편성하는 작업(닉네임, 좋아요 수, 각 게시물과 로그인한 사용자의 좋아요 관계 등)
-    private PostToFE convertToPostFE(Long userId, Post post) {
-        Long postId = post.getId();
-        String nickname = post.getUser().getNickname();
-        String createdAt = String.valueOf(post.getCreatedAt());
-        String contents = post.getContents();
-        String imageUrl = post.getImageUrl();
-        LayoutType layoutType = post.getLayoutType();
-
-        List<Like> likes = post.getLikes();
-        Long likeCnt = Long.valueOf(post.getLikes().size());
-        Boolean userLiked = false;
-        for (Like like : likes) {
-            if (like.getUser().getId() == userId) {
-                userLiked = true;
-                break;
-            }
-        }
-        PostToFE postToFE = new PostToFE(postId, nickname, createdAt, contents, imageUrl, likeCnt, userLiked, layoutType);
-        return postToFE;
     }
 
     @Transactional
@@ -100,6 +77,28 @@ public class PostService {
         String imageUrl = post.getImageUrl();
         postRepository.deleteById(postId);
         return imageUrl;
+    }
+
+    //프론트에서 보여줄 양식대로 재편성하는 작업(닉네임, 좋아요 수, 각 게시물과 로그인한 사용자의 좋아요 관계 등)
+    private PostResponseDto convertToPostFE(Long userId, Post post) {
+        Long postId = post.getId();
+        String nickname = post.getUser().getNickname();
+        String createdAt = String.valueOf(post.getCreatedAt());
+        String contents = post.getContents();
+        String imageUrl = post.getImageUrl();
+        LayoutType layoutType = post.getLayoutType();
+
+        List<Like> likes = post.getLikes();
+        Long likeCnt = Long.valueOf(post.getLikes().size());
+        Boolean userLiked = false;
+        for (Like like : likes) {
+            if (like.getUser().getId() == userId) {
+                userLiked = true;
+                break;
+            }
+        }
+        PostResponseDto postToFE = new PostResponseDto(postId, nickname, createdAt, contents, imageUrl, likeCnt, userLiked, layoutType);
+        return postToFE;
     }
 
 }
