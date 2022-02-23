@@ -1,6 +1,8 @@
 # 🥨 jeonghyeon-backend-magazine 🥨
 http://13.209.40.211/
 
+임시 CORS 열어둔 주소: http://localhost:3000
+
 ## API List
 
 ## 1. 게시글 작성
@@ -14,11 +16,12 @@ http://13.209.40.211/
   
               String "contents":"contents", 
               
-              String "layoutType":"layoutType"}
+              String "layoutType":"layoutType"}    (DEFAULT, LEFT, RIGHT)
               
   ✔︎ Response: Long 저장한 postId
               
               // 로그인하지 않은 사용자의 경우 400에러와 메시지("로그인하지 않은 사용자는 포스팅할 수 없습니다.")
+              // layoutType은 우선 (DEFAULT, LEFT, RIGHT) 중 하나로 설정되어 있습니다. 그 외 문자열 입력시 400에러가 나옵니다.
               
 ## 2. 단일 게시글 조회              
   ✔︎ Method: GET
@@ -43,14 +46,14 @@ http://13.209.40.211/
                           
                           Boolean "userLiked"; "userLiked"          (현재 로그인한 사용자가 해당 게시글을 좋아요했는지 여부 ex. true, false)
                           
-                          String "layoutType"; "layoutType"}        (ex. default, left, right)
+                          String "layoutType"; "layoutType"}        (DEFAULT, LEFT, RIGHT)
               
 ## 3. 전체 게시글 조회
   ✔︎ Method: GET
   
   ✔︎ Api: /api/post
   
-  ✔︎ Request: 없음
+  ✔︎ Request: 없음 또는 페이징을 위한 경로변수 (ex. /api/post?page=0&size=3)
   
   ✔︎ Response: PostToFE 의 List 
   
@@ -66,7 +69,7 @@ http://13.209.40.211/
   
               String "contents": "contents", 
   
-              String "layoutType": "layoutType"}
+              String "layoutType": "layoutType"}   (DEFAULT, LEFT, RIGHT)
   
   ✔︎ Response: Long 수정한 postId
   
@@ -80,7 +83,7 @@ http://13.209.40.211/
   
   ✔︎ Request: Long postId
   
-  ✔︎ Response: Long 삭제한 postId
+  ✔︎ Response: String 삭제한 게시글의 imageUrl
   
                // 로그인하지 않은 사용자의 경우 400에러와 메시지("로그인이 필요합니다.")
                // 작성자가 아닌 사용자의 경우 400에러와 메시지("작성자가 아니면 삭제할 수 없습니다.")
@@ -107,7 +110,7 @@ http://13.209.40.211/
   
                           String "nickname":"nickname"}
   
-  ✔︎ Response: Success
+  ✔︎ Response: Success -> 로그인(/user/login)으로 redirect
   
               // 다음의 경우에 400에러와 메시지 : 중복 이메일 존재, 중복 닉네임 존재, 패스워드에 닉네임 포함, 닉네임이 3글자 미만, 닉네임에 특수문자나 한글 포함
               
@@ -116,7 +119,7 @@ http://13.209.40.211/
   
   ✔︎ Request: Form data = 
   
-                        {String "userEmail":"userEmail",
+                        {String "username":"userEmail(실제로는 이메일값인데, name부분만 username이에요..^^ 죄송합니다!!)",
   
                           String "password":"password"}
   
