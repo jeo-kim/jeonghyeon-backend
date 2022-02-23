@@ -6,6 +6,7 @@ import com.sparta.magazine.model.User;
 import com.sparta.magazine.security.UserDetailsImpl;
 import com.sparta.magazine.service.PostService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,10 +29,10 @@ public class PostController {
     }
 
     @GetMapping("/api/post")
-    public List<PostToFE> getAllPosts(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public List<PostToFE> getAllPosts(@AuthenticationPrincipal UserDetailsImpl userDetails, Pageable pageable) {
         // 로그인했으면 해당 id를, 로그인 안했으면 -1을 userId에 할당
         Long userId = (userDetails !=null) ? userDetails.getUser().getId() : -1;
-        List<PostToFE> postsToFE = postService.getAllPosts(userId);
+        List<PostToFE> postsToFE = postService.getAllPosts(userId, pageable);
         return postsToFE;
     }
 

@@ -8,6 +8,7 @@ import com.sparta.magazine.dto.PostToFE;
 import com.sparta.magazine.model.User;
 import com.sparta.magazine.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,10 +29,9 @@ public class PostService {
     }
 
     @Transactional
-    public List<PostToFE> getAllPosts(Long userId) {
+    public List<PostToFE> getAllPosts(Long userId, Pageable pageable) {
 
-        Sort sort = sortByDate();
-        List<Post> posts = postRepository.findAllFetched(sort);
+        List<Post> posts = postRepository.findAllFetched(pageable);
         List<PostToFE> postsToFE = new ArrayList<>();
 
         for (Post post : posts) {
@@ -99,10 +99,6 @@ public class PostService {
         }
         postRepository.deleteById(postId);
         return postId;
-    }
-
-    private Sort sortByDate() {
-        return Sort.by(Sort.Direction.DESC, "createdAt");
     }
 
 }
