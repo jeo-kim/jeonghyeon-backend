@@ -1,5 +1,7 @@
 package com.sparta.magazine.security;
 
+import com.sparta.magazine.exception.LoginFailureHandler;
+import com.sparta.magazine.exception.LoginSuccessHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -71,10 +73,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginPage("/user/login")
         // 로그인 처리 (POST /user/login)
                 .loginProcessingUrl("/user/login")
+                // 로그인 성공 핸들러
+                .successHandler(new LoginSuccessHandler())
+                // 로그인 실패 핸들러
+                .failureHandler(new LoginFailureHandler())
+
+
         // 로그인 처리 후 성공 시 URL
-                .defaultSuccessUrl("http://localhost:3000/")
+//                .defaultSuccessUrl("/")
         // 로그인 처리 후 실패 시 URL
-                .failureUrl("/user/login/error")
+//                .failureUrl("/user/login/error")
                 .permitAll()
                 .and()
         // [로그아웃 기능]
