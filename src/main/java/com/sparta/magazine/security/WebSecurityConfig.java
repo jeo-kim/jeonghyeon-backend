@@ -1,5 +1,7 @@
 package com.sparta.magazine.security;
 
+import com.sparta.magazine.exception.LoginFailureHandler;
+import com.sparta.magazine.exception.LoginSuccessHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -35,7 +37,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.addAllowedOrigin("http://localhost:3000");
-        configuration.setAllowedMethods(Arrays.asList("GET","POST", "OPTIONS", "PUT","DELETE"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "OPTIONS", "PUT", "DELETE"));
         configuration.setAllowedHeaders(Collections.singletonList("*"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
@@ -46,40 +48,41 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 // 회원 관리 처리 API (POST /user/**) 에 대해 CSRF 무시
         http.csrf().disable()
-            .cors().configurationSource(corsConfigurationSource());
+                .cors().configurationSource(corsConfigurationSource());
 
 //        http.csrf()
 //                .ignoringAntMatchers("/")
 //                .ignoringAntMatchers("/user/**");
 
         http.authorizeRequests()
-        // image 폴더를 login 없이 허용
+                // image 폴더를 login 없이 허용
                 .antMatchers("/images/**").permitAll()
-        // css 폴더를 login 없이 허용
+                // css 폴더를 login 없이 허용
                 .antMatchers("/css/**").permitAll()
-        // 회원 관리 처리 API 전부를 login 없이 허용
+                // 회원 관리 처리 API 전부를 login 없이 허용
                 .antMatchers("/user/**").permitAll()
                 //TODO 메인페이지를 비회원에게도 열어두려면 여기다 해도 될지
                 .antMatchers("/").permitAll()
                 .antMatchers("/api/**").permitAll()
-        // 그 외 어떤 요청이든 '인증'
+                // 그 외 어떤 요청이든 '인증'
                 .anyRequest().authenticated()
                 .and()
-        // [로그인 기능]
+                // [로그인 기능]
                 .formLogin()
-        // 로그인 View 제공 (GET /user/login)
+                // 로그인 View 제공 (GET /user/login)
                 .loginPage("/user/login")
-        // 로그인 처리 (POST /user/login)
+                // 로그인 처리 (POST /user/login)
                 .loginProcessingUrl("/user/login")
-        // 로그인 처리 후 성공 시 URL
-                .defaultSuccessUrl("http://localhost:3000/")
-        // 로그인 처리 후 실패 시 URL
-                .failureUrl("/user/login/error")
+                // 로그인 성공 핸들러
+                .successHandler(new LoginSuccessHandler())
+                // 로그인 실패 핸들러
+                .failureHandler(new LoginFailureHandler())
+
                 .permitAll()
                 .and()
-        // [로그아웃 기능]
+                // [로그아웃 기능]
                 .logout()
-        // 로그아웃 처리 URL
+                // 로그아웃 처리 URL
                 .logoutUrl("/user/logout")
                 .permitAll();
     }
