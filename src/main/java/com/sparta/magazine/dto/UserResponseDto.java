@@ -7,14 +7,14 @@ import lombok.Getter;
 public class UserResponseDto {
     private Long userId;
 
-    private String userEmail;
+    private String email;
 
     private String nickname;
 
     @Builder
-    public UserResponseDto(Long userId, String userEmail, String nickname){
+    public UserResponseDto(Long userId, String email, String nickname){
         this.userId = userId;
-        this.userEmail = userEmail;
+        this.email = email;
         this.nickname = nickname;
     }
 }
