@@ -2,42 +2,55 @@ package com.sparta.magazine.controller;
 
 import com.sparta.magazine.dto.SignupRequestDto;
 import com.sparta.magazine.service.UserService;
-import com.sparta.magazine.validator.SignupInputValidator;
-import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-
-@CrossOrigin(origins = "http://localhost:3000")
-@RequiredArgsConstructor
-@RestController
+@Controller
 public class UserController {
 
     private final UserService userService;
-    private final SignupInputValidator signupInputValidator;
+//    private final KakaoUserService kakaoUserService;
 
-    // 로그인 실패 메시지
-    @GetMapping("/user/login/error")
-    public void loginFail() {
-        throw new IllegalArgumentException("아이디 또는 패스워드를 확인해주세요.");
+    @Autowired
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
+
+    // 회원 로그인 페이지
+    @GetMapping("/user/loginView")
+    public String login() {
+        return "login";
+    }
+
+    // 회원 가입 페이지
+    @GetMapping("/user/signup")
+    public String signup() {
+        return "signup";
     }
 
     // 회원 가입 요청 처리
     @PostMapping("/user/signup")
-    public void registerUser(SignupRequestDto requestDto, HttpServletResponse response) throws IOException {
-        String userEmail = requestDto.getUserEmail().trim();
-        String password = requestDto.getPassword().trim();
-        String nickname = requestDto.getNickname().trim();
-
-        signupInputValidator.IsValidSignupInput(userEmail, password, nickname);
-
+    public String registerUser(SignupRequestDto requestDto) {
         userService.registerUser(requestDto);
-        response.sendRedirect("/user/login");
-
+        return "index";
     }
 
+//    // 회원 관련 정보 받기
+//    @PostMapping("/user/userinfo")
+//    @ResponseBody
+//    public UserInfoDto getUserInfo(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+//        String username = userDetails.getUser().getUsername();
+//        UserRoleEnum role = userDetails.getUser().getRole();
+//        boolean isAdmin = (role == UserRoleEnum.ADMIN);
+//
+//        return new UserInfoDto(username, isAdmin);
+//    }
+//
+//    @GetMapping("/user/kakao/callback")
+//    public String kakaoLogin(@RequestParam String code) throws JsonProcessingException {
+//        kakaoUserService.kakaoLogin(code);
+//        return "redirect:/";
+//    }
 }
